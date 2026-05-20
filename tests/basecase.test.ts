@@ -15,10 +15,19 @@ import { test, expect } from '@playwright/test';
 test('Флоу регистрации', async ({ page }) => {
   await page.goto('/');
 
-  const dialogOverlayButton = page.getByRole('button', { name: 'Consent' });
-  await expect(page.locator('.fc-dialog-overlay')).toBeVisible();
-  await expect(dialogOverlayButton).toBeVisible();
-  await dialogOverlayButton.click();
+  // const dialogOverlayButton = page.getByRole('button', { name: 'Consent' });
+  // await expect(page.locator('.fc-dialog-overlay')).toBeVisible();
+  // await expect(dialogOverlayButton).toBeVisible();
+  // await dialogOverlayButton.click();
+
+  try {
+    const dialogOverlay = page.locator('.fc-dialog-overlay');
+    const dialogOverlayButton = page.getByRole('button', { name: 'Consent' });
+    await expect(dialogOverlay).toBeVisible();
+    await dialogOverlayButton.click({ timeout: 3000 });
+  } catch (error) {
+    console.log('Overlay banner googla ne poyavilsya =)');
+  }
 
   const login = page.getByRole('link', { name: ' Signup / Login' });
   await expect(login).toBeVisible();
