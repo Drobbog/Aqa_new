@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { generateSignupData } from '../utils/data-generator';
+import type { SignupData } from '../utils/data-generator';
 
 // test.beforeEach(async ({ page }) => {
 //   await page.addLocatorHandler(
@@ -41,8 +43,11 @@ test('Флоу регистрации', async ({ page }) => {
     .locator('form')
     .filter({ hasText: 'Signup' })
     .getByPlaceholder('Email Address');
-  await nameForm.fill('Test1337test778');
-  await emailForm.fill('test1@testo1337778.com');
+
+  const name = generateSignupData().username;
+  await nameForm.fill(name);
+  const email = generateSignupData().email;
+  await emailForm.fill(email);
 
   const signupButton = page.getByRole('button', { name: 'Signup' });
   await signupButton.click();
@@ -78,29 +83,33 @@ test('Флоу регистрации', async ({ page }) => {
   // await page.locator('.grippy-host').click();
 
   await accountMaleTitle.check();
-  await expect(accountName).toHaveValue('Test1337test778');
-  await expect(accountEmail).toHaveValue('test1@testo1337778.com');
-  await accountPassword.fill('Q1w2e3r4t5y6');
+  await expect(accountName).toHaveValue(name);
+  await expect(accountEmail).toHaveValue(email);
 
-  await accountDayOfBirth.selectOption('1');
-  await accountMonthOfBirth.selectOption('2');
-  await accountYearOfBirth.selectOption('2000');
+  const password = generateSignupData().password;
+  await accountPassword.fill(password);
+
+  await accountDayOfBirth.selectOption(generateSignupData().day);
+  await accountMonthOfBirth.selectOption(generateSignupData().month);
+  await accountYearOfBirth.selectOption(generateSignupData().year);
 
   await checkboxNewsletters.check();
   await checkboxPartners.check();
   await expect(checkboxNewsletters).toBeChecked();
   await expect(checkboxPartners).toBeChecked();
+  await checkboxPartners.uncheck();
+  await expect(checkboxPartners).not.toBeChecked();
 
-  await userFirstName.fill('Sam');
-  await userLastName.fill('Samogon');
-  await userCompany.fill('Rome777');
-  await userAdress.fill('Dom 333');
-  await userAdress2.fill('Example');
-  await userCountry.selectOption('Israel');
-  await userState.fill('Pumpum');
-  await userCity.fill('Rome');
-  await userZipcode.fill('1234567');
-  await userNumber.fill('88005553535');
+  await userFirstName.fill(generateSignupData().firstName);
+  await userLastName.fill(generateSignupData().lastName);
+  await userCompany.fill(generateSignupData().company);
+  await userAdress.fill(generateSignupData().address1);
+  await userAdress2.fill(generateSignupData().address2);
+  await userCountry.selectOption(generateSignupData().country);
+  await userState.fill(generateSignupData().state);
+  await userCity.fill(generateSignupData().city);
+  await userZipcode.fill(generateSignupData().zipcode);
+  await userNumber.fill(generateSignupData().mobile);
 
   await createButton.click();
 
@@ -111,5 +120,5 @@ test('Флоу регистрации', async ({ page }) => {
   const continueButton = page.getByRole('link', { name: 'Continue' });
   await continueButton.click();
 
-  await expect(page.getByText('Logged in as Test1337test778')).toBeVisible();
+  await expect(page.getByText(`Logged in as ${name}`)).toBeVisible();
 });
