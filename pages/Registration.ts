@@ -82,107 +82,45 @@ export class RegistrationPage {
     this.continueButton = page.locator('[data-qa="continue-button"]');
     //
   }
-  // проверка что логин и почта подтянулись на экран регистрации
-  async filledAccountNameValue() {
-    await expect(this.accountName).toHaveValue(this.userData.username);
-  }
-  async filledAccountEmailValue() {
-    await expect(this.accountEmail).toHaveValue(this.userData.email);
-  }
+
   // проверки радио-кнопок
-  async checkNews() {
+  async checkRadioButtons() {
     await this.checkboxNews.check();
-  }
-  async checkPartners() {
     await this.checkboxPartners.check();
-  }
-  async uncheckNews() {
+    await expect(this.checkboxNews).toBeChecked();
+    await expect(this.checkboxPartners).toBeChecked();
     await this.checkboxNews.uncheck();
-  }
-  async uncheckPartners() {
     await this.checkboxPartners.uncheck();
-  }
-  async checkedNews() {
     await expect(this.checkboxNews).not.toBeChecked();
-  }
-  async checkedPartners() {
     await expect(this.checkboxPartners).not.toBeChecked();
-  }
-  async checkMaleRadio() {
-    await this.maleRadio.check();
-  }
-  async checkFemaleRadio() {
     await this.femaleRadio.check();
-  }
-  async checkedMaleRadio() {
     await expect(this.maleRadio).not.toBeChecked();
-  }
-  async checkedFemaleRadio() {
+    await this.maleRadio.check();
     await expect(this.femaleRadio).not.toBeChecked();
   }
   // основная инфа юзера
-  async fillAccountPassword() {
+  async fillAccountData() {
     await this.accountPassword.fill(this.NewUserData.password);
-  }
-  async fillDayOfBirth() {
     await this.accountDayOfBirth.selectOption(this.NewUserData.day);
-  }
-  async fillMonthOfBirth() {
     await this.accountMonthOfBirth.selectOption(this.NewUserData.month);
-  }
-  async fillYearOfBirth() {
     await this.accountYearOfBirth.selectOption(this.NewUserData.year);
-  }
-  async fillUserFirstName() {
     await this.userFirstName.fill(this.NewUserData.firstName);
-  }
-  async fillUserLastName() {
     await this.userLastName.fill(this.NewUserData.lastName);
-  }
-  async fillUserCompany() {
     await this.userCompany.fill(this.NewUserData.company);
-  }
-  async fillUserAdress1() {
     await this.userAdress1.fill(this.NewUserData.address1);
-  }
-  async fillUserAdress2() {
     await this.userAdress2.fill(this.NewUserData.address2);
-  }
-  async fillUserCountry() {
     await this.userCountry.selectOption(this.NewUserData.country);
-  }
-  async fillUserState() {
     await this.userState.fill(this.NewUserData.state);
-  }
-  async fillUserCity() {
     await this.userCity.fill(this.NewUserData.city);
-  }
-  async fillUserZipcode() {
     await this.userZipcode.fill(this.NewUserData.zipcode);
-  }
-  async fillUserNumber() {
     await this.userNumber.fill(this.NewUserData.username);
   }
-
-  // кнопка сделать юзера
-  async createAccountButtonPress() {
-    await this.createButton.click();
-  }
-  async createAccountButtonVisible() {
+  // проверка важных блоков формы
+  async checkNecessaryBlocks() {
     await this.createButton.waitFor({ state: "visible" });
-  }
-  // проверки хедеров формы
-  async headingFirstVisible() {
     await this.headingFirst.waitFor({ state: "visible" });
-  }
-  async headingSecondVisible() {
     await this.headingSecond.waitFor({ state: "visible" });
-  }
-  // проверки финальной страницы после успешной регистрации
-  async successCreatedAccount() {
-    await this.accountCreatedHeader.waitFor({ state: "visible" });
-  }
-  async pressContinue() {
-    await this.continueButton.click();
+    await expect(this.accountName).toHaveValue(this.userData.username);
+    await expect(this.accountEmail).toHaveValue(this.userData.email);
   }
 }

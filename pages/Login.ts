@@ -28,34 +28,14 @@ export class LoginPage {
   async goToMainPage() {
     await this.page.goto("/");
   }
-
-  async loginLinkVisible() {
-    await this.loginLink.waitFor({ state: "visible" });
-  }
-
-  async loginLinkClick() {
-    await this.loginLink.click();
-  }
-
-  async loginFormVisible() {
+  async loginFormsVisible() {
     await this.loginForm.waitFor({ state: "visible" });
-  }
-  async signupFormVisible() {
     await this.signupForm.waitFor({ state: "visible" });
   }
-
-  async fillNameInput() {
-    await this.nameInput.fill(this.userData.username);
+  async fillUserCreds(username: string, email: string) {
+    await this.nameInput.fill(username);
+    await this.emailInput.fill(email);
   }
-
-  async fillEmailInput() {
-    await this.emailInput.fill(this.userData.email);
-  }
-
-  async signupButtonPress() {
-    await this.signupButton.click();
-  }
-
   // проверка в самом конце когда пользователь уже авторизован на сайте после регистрации
   async beLoggedInAs() {
     await this.loggedInAs(this.userData.username).waitFor({ state: "visible" });

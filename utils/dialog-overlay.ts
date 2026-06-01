@@ -1,16 +1,24 @@
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 
-export async function dialogOverlayClose(page: Page) {
-  const dialogOverlay = page.locator(".fc-dialog-overlay");
-  const dialogOverlayButton = page.getByRole("button", { name: "Consent" });
-  const isVisible = await dialogOverlay
-    .isVisible({ timeout: 3000 })
-    .catch(() => false);
+export class DialogOverlay {
+  readonly page: Page;
+  readonly dialogOverlay: Locator;
+  readonly dialogOverlayButton: Locator;
 
-  if (isVisible) {
-    await dialogOverlayButton.click();
-    console.log("Overlay banner zakrilsya=)");
-  } else {
-    console.log("Overlay banner google ne poyavilsya=)");
+  constructor(page: Page) {
+    this.page = page;
+    this.dialogOverlay = page.locator(".fc-dialog-overlay");
+    this.dialogOverlayButton = page.getByRole("button", { name: "Consent" });
+  }
+
+  async dialogOverlayClose() {
+    const isVisible = await this.dialogOverlay.isVisible({ timeout: 3000 });
+
+    if (isVisible) {
+      await this.dialogOverlayButton.click();
+      console.log("Overlay banner zakrilsya=)");
+    } else {
+      console.log("Overlay banner google ne poyavilsya=)");
+    }
   }
 }
